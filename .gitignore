@@ -1,0 +1,15 @@
+# Token output (sensitive!)
+codex/
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+
+# Environment
+.env
+.env.*
+
+# OS
+.DS_Store
+Thumbs.db
