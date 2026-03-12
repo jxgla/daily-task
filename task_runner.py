@@ -1329,9 +1329,18 @@ def main() -> None:
     os.makedirs(output_dir, exist_ok=True)
 
     ui_state = UIState(started_at=datetime.now())
-    with Live(_render_dashboard(), console=console, screen=True, refresh_per_second=4) as live:
-        ui_live = live
-        _append_round_log("[bold cyan]OpenAI Auto Registrar 已启动[/bold cyan]")
+    is_ci = not sys.stdout.isatty() or os.getenv("CI") == "true"
+    
+    from contextlib import nullcontext
+    ctx = nullcontext() if is_ci else Live(_render_dashboard(), console=console, screen=True, refresh_per_second=4)
+
+    with ctx as live:
+        ui_live = None if is_ci else live
+        
+        if ui_live:
+            _append_round_log("[bold cyan]OpenAI Auto Registrar 已启动[/bold cyan]")
+        else:
+            console.print("[bold cyan]OpenAI Auto Registrar 已启动 (CLI 模式)[/bold cyan]")
 
         while True:
             ui_state.total_count += 1
