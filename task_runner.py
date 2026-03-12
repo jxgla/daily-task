@@ -1299,7 +1299,7 @@ def main() -> None:
         "--sleep-max", type=int, default=30, help="循环模式最长等待秒数"
     )
     parser.add_argument(
-        "--output-dir", default=".", help="Token 输出目录，默认当前目录"
+        "--output-dir", default="codex", help="Token 输出目录，默认 codex 目录"
     )
     # 临时邮箱服务商
     parser.add_argument(
@@ -1325,7 +1325,7 @@ def main() -> None:
 
     sleep_min = max(1, args.sleep_min)
     sleep_max = max(sleep_min, args.sleep_max)
-    output_dir = args.output_dir or "."
+    output_dir = args.output_dir or "codex"
     os.makedirs(output_dir, exist_ok=True)
 
     ui_state = UIState(started_at=datetime.now())
