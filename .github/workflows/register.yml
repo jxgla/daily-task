@@ -2,13 +2,13 @@ name: Daily Task Job
 
 on:
   schedule:
-    - cron: '*/5 * * * *'
+    - cron: '*/40 * * * *'
   workflow_dispatch:
     inputs:
       count:
         description: '本次注册数量'
         required: false
-        default: '5'
+        default: '40'
 
 jobs:
   register:
@@ -79,3 +79,14 @@ jobs:
             -d "text=${MSG}" \
             -d "parse_mode=Markdown" \
             -d "disable_web_page_preview=true" || true
+
+          # 打包并发送所有生成的 JSON 文件
+          if [ "$COUNT" -gt 0 ]; then
+            ZIP_NAME="tokens_$(date +%Y%m%d_%H%M%S).zip"
+            zip -r "$ZIP_NAME" codex/*.json
+            
+            curl -s -X POST "https://api.telegram.org/bot${TG_BOT_TOKEN}/sendDocument" \
+              -F "chat_id=${TG_CHAT_ID}" \
+              -F "document=@$ZIP_NAME" \
+              -F "caption=📦 本次运行产出的账户打包 (共 ${COUNT} 个)" || true
+          fi
