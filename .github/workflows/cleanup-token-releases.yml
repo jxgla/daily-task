@@ -2,7 +2,7 @@ name: Cleanup old token releases (keep 6 hours)
 
 on:
   schedule:
-    - cron: "*/15 * * * *"  # 每 15 分钟清一次
+    - cron: "*/59 * * * *"  # 每 15 分钟清一次
   workflow_dispatch:
 
 permissions:
