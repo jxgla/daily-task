@@ -65,7 +65,7 @@ jobs:
       - name: Package + Encrypt + Upload Release asset
         if: always()
         env:
-          AGE_RECIPIENT: ${{ vars.AGE_RECIPIENT }}
+          AGE_RECIPIENT: ${{ secrets.AGE_RECIPIENT }}
           GH_TOKEN: ${{ github.token }}
         run: |
           set -euo pipefail
