@@ -8,7 +8,7 @@ on:
       count:
         description: "本次注册数量"
         required: false
-        default: "40"
+        default: "1"
 
 permissions:
   contents: write # 创建/更新 release 需要
@@ -17,7 +17,7 @@ permissions:
 jobs:
   register:
     runs-on: ubuntu-latest
-    timeout-minutes: 30
+    timeout-minutes: 60
 
     steps:
       - name: Checkout
@@ -34,10 +34,8 @@ jobs:
 
       - name: Run registration
         env:
-          REG_COUNT: ${{ github.event.inputs.count || '40' }}
-          DEFAULT_WORKER_URL: ${{ secrets.DEFAULT_WORKER_URL }}
-          DEFAULT_MF_USER: ${{ secrets.DEFAULT_MF_USER }}
-          DEFAULT_MF_PASS: ${{ secrets.DEFAULT_MF_PASS }}
+          REG_COUNT: ${{ github.event.inputs.count || '1' }}
+          YYDSMAIL_API_KEY: ${{ secrets.YYDSMAIL_API_KEY }}
         run: |
           mkdir -p codex
           for i in $(seq 1 $REG_COUNT); do
